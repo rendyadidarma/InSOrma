@@ -11,6 +11,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.InSOrma">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDkwG0HWZJQtW0Ev17YjgtzQkwndnTts4Q" />
         <activity
             android:name=".FurnitureDetail"
             android:exported="false" />
