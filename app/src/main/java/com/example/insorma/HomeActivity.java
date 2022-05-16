@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 
 import com.example.insorma.databinding.ActivityHomeBinding;
+import com.example.insorma.fragment.AboutUsFragment;
 import com.example.insorma.fragment.HistoryFragment;
 import com.example.insorma.fragment.HomeFragment;
 import com.example.insorma.fragment.ProfileFragment;
@@ -128,6 +129,8 @@ public class HomeActivity extends AppCompatActivity implements NavigationBarView
             switchFragment(new HomeFragment(user_id_logged));
         } else if(item.getItemId() == R.id.action_history) {
             switchFragment(new HistoryFragment());
+        } else if(item.getItemId() == R.id.action_aboutUs){
+            switchFragment(new AboutUsFragment());
         } else if(item.getItemId() == R.id.action_profile) {
             switchFragment(new ProfileFragment(user_id_logged));
         }
