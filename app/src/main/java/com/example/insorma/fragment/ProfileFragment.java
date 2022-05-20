@@ -93,12 +93,15 @@ public class ProfileFragment extends Fragment implements View.OnClickListener {
         } else if( v.getId() == R.id.save_btn) {
             String curr_username = usernameValue.getText().toString();
             try {
-                boolean uniqueCheck = dbHelper.updateUserData(curr_username, user_id_logged);
-
                 if(curr_username.equalsIgnoreCase("")) {
                     Toast.makeText(getActivity(), "Failed to Update username, USERNAME CANNOT BE EMPTY", Toast.LENGTH_SHORT).show();
-                } else if(uniqueCheck) {
-                    Toast.makeText(getActivity(), "Data Update Successful", Toast.LENGTH_SHORT).show();
+                } else {
+                    boolean uniqueCheck = dbHelper.updateUserData(curr_username, user_id_logged);
+                    if(!uniqueCheck) {
+                        Toast.makeText(getActivity(), "Failed to Update, Username must be Unique", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(getActivity(), "Data Update Successful", Toast.LENGTH_SHORT).show();
+                    }
                 }
 
             } catch (Exception e) {
