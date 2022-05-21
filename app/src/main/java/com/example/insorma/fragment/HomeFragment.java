@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,7 +29,7 @@ public class HomeFragment extends Fragment  {
     private final int user_id_logged;
     private String username;
     private Cursor cursor;
-
+    private ProgressBar progressBar;
     public HomeFragment(int UserID) {
         this.user_id_logged = UserID;
     }
