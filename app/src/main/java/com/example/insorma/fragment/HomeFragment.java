@@ -28,6 +28,7 @@ public class HomeFragment extends Fragment  {
 
     private final int user_id_logged;
     private String username;
+    private String phoneNumber;
     private Cursor cursor;
     private ProgressBar progressBar;
     public HomeFragment(int UserID) {
@@ -50,15 +51,14 @@ public class HomeFragment extends Fragment  {
         try (Cursor cursor = dbHelper.getUserData(user_id_logged)) {
             cursor.moveToFirst();
             username = cursor.getString(2);
+            phoneNumber = cursor.getString(3);
             Log.wtf("Username In Fragment", cursor.getString(2));
             Log.wtf("ID in Fragment", cursor.getString(0));
         } catch (Exception e) {
             Toast.makeText(getActivity(), "No match data", Toast.LENGTH_SHORT).show();
         }
-
         cursor = dbHelper.getProductDataV2();
         cursor.moveToFirst();
-
         usernameView.setText(String.format("Hello, %s", username));
         ListAdapter listAdapter = new ListAdapter(getActivity(), cursor);
         listView.setAdapter(listAdapter);
@@ -69,6 +69,7 @@ public class HomeFragment extends Fragment  {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent a = new Intent(getActivity(), FurnitureDetail.class);
                 a.putExtra("position", id);
+                a.putExtra("phone_number", phoneNumber);
                 startActivity(a);
             }
         });

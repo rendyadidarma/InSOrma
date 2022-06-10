@@ -3,10 +3,13 @@ package com.example.insorma;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -27,6 +30,8 @@ public class FurnitureDetail extends AppCompatActivity implements View.OnClickLi
     DBHelper dbHelper;
     SharedPreferences sharedPreferences;
     long product_id;
+
+    String phoneNumber;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,7 +50,8 @@ public class FurnitureDetail extends AppCompatActivity implements View.OnClickLi
 
         if(intent != null) {
             product_id = intent.getLongExtra("position", 0);
-
+            phoneNumber = intent.getStringExtra("phone_number");
+            Log.wtf("Phone in Detail 1", phoneNumber);
             nameView = findViewById(R.id.detail_name);
             ratingView = findViewById(R.id.detail_rating);
             priceView = findViewById(R.id.detail_price);
@@ -82,9 +88,20 @@ public class FurnitureDetail extends AppCompatActivity implements View.OnClickLi
                     Toast.makeText(this, "Quantity must be more than zero", Toast.LENGTH_SHORT).show();
                     qtyView.requestFocus();
                 } else {
+
 //                    int tempId = historyList.size()+1;
                     Date currDate = new Date();
                     dbHelper.setTransactionData(new Transaction(-1, sharedPreferences.getInt("ID", -1) , (int) product_id, quantity, currDate));
+
+                    try {
+                        SmsManager smsManager = SmsManager.getDefault();
+                        Log.wtf("Phone in Detail 2", phoneNumber);
+                        smsManager.sendTextMessage(phoneNumber, null, "Test123", null, null);
+                        Log.wtf("Success", "Message Sent");
+                    } catch (Exception e) {
+                        Log.wtf("Error", "Empty Field");
+                    }
+
                     Toast.makeText(this, "COMPLETE BUY!", Toast.LENGTH_SHORT).show();
                     finish();
                 }
