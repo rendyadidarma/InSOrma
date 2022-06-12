@@ -142,11 +142,18 @@ public class HomeActivity extends AppCompatActivity implements NavigationBarView
         ft.commit();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+//        generateData();
+    }
+
     public void init() {
         SharedPreferences sPref = getSharedPreferences("LOGGED_IN", MODE_PRIVATE);
         user_id_logged = sPref.getInt("ID", -1);
-        generateData();
         switchFragment(new HomeFragment(user_id_logged));
+        generateData();
+//        switchFragment(new HomeFragment(user_id_logged));
         bottomNav = findViewById(R.id.bottomNav);
     }
 

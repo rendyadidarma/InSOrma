@@ -91,7 +91,6 @@ public class DBHelper extends SQLiteOpenHelper {
         content.put(USER_USERNAME, data.getUserUsername());
         content.put(USER_PHONE_NUMBER, data.getUserPhoneNumber());
         content.put(USER_PASSWORD, data.getUserPassword());
-
         long res = db.insertOrThrow(TABLE_USER, null, content);
 
         if(res == -1)

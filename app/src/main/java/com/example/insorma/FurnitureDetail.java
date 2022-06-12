@@ -2,7 +2,9 @@ package com.example.insorma;
 
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -30,6 +32,8 @@ public class FurnitureDetail extends AppCompatActivity implements View.OnClickLi
     DBHelper dbHelper;
     SharedPreferences sharedPreferences;
     long product_id;
+
+    private String productName;
 
     String phoneNumber;
     @Override
@@ -61,7 +65,8 @@ public class FurnitureDetail extends AppCompatActivity implements View.OnClickLi
             Cursor cursor = dbHelper.getProductData(product_id);
             cursor.moveToFirst();
 
-            nameView.setText(cursor.getString(1));
+            productName = cursor.getString(1);
+            nameView.setText(productName);
             ratingView.setText(cursor.getString(2));
             priceView.setText(cursor.getString(3));
             new ListAdapter.DownloadImageTask(imgView).execute(cursor.getString(4));
@@ -72,6 +77,12 @@ public class FurnitureDetail extends AppCompatActivity implements View.OnClickLi
             sharedPreferences = getSharedPreferences("LOGGED_IN", MODE_PRIVATE);
 
         }
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.SEND_SMS},1);
     }
 
     @Override
@@ -88,20 +99,19 @@ public class FurnitureDetail extends AppCompatActivity implements View.OnClickLi
                     Toast.makeText(this, "Quantity must be more than zero", Toast.LENGTH_SHORT).show();
                     qtyView.requestFocus();
                 } else {
-
-//                    int tempId = historyList.size()+1;
                     Date currDate = new Date();
                     dbHelper.setTransactionData(new Transaction(-1, sharedPreferences.getInt("ID", -1) , (int) product_id, quantity, currDate));
 
                     try {
                         SmsManager smsManager = SmsManager.getDefault();
-                        Log.wtf("Phone in Detail 2", phoneNumber);
-                        smsManager.sendTextMessage(phoneNumber, null, "Test123", null, null);
+                        Log.wtf("Phone in Detail 2", phoneNumber); // user phone number
+                        String emulatorNumber = "+1-555-123-4567";
+                        String msg = "Success Buy \n" + "Product: " + productName + "\n" + "Quantity: " + quantity + "\n" + "Thank you for buying. Have a Nice Day.";
+                        smsManager.sendTextMessage(emulatorNumber, null, msg, null, null);
                         Log.wtf("Success", "Message Sent");
                     } catch (Exception e) {
                         Log.wtf("Error", "Empty Field");
                     }
-
                     Toast.makeText(this, "COMPLETE BUY!", Toast.LENGTH_SHORT).show();
                     finish();
                 }
